@@ -19,6 +19,7 @@ public class SkillAPIManaAddon extends JavaPlugin implements Listener
 	@Override
 	public void onEnable()
 	{
+		getServer().getPluginManager().registerEvents(this, this);
 		getLogger().info("FoodbarMana Addon Enabled for SkillAPI!");
 	}
 	
@@ -82,14 +83,16 @@ public class SkillAPIManaAddon extends JavaPlugin implements Listener
 	
 	public int getPlayerMana(Player player)
 	{
-		PlayerSkills pData = skillAPI.getPlayer(player);
+		String pName = player.getName();
+		PlayerSkills pData = skillAPI.getPlayer(pName);
 		int playerMana = pData.getMana();
 		return playerMana;
 	}
 	
 	public int getPlayerMaxMana(Player player)
 	{
-		PlayerSkills pData = skillAPI.getPlayer(player);
+		String pName = player.getName();
+		PlayerSkills pData = skillAPI.getPlayer(pName);
 		int playerMaxMana = pData.getMaxMana();
 		return playerMaxMana;
 	}
