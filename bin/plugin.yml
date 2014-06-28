@@ -1,4 +1,4 @@
 name: FoodManaSkillAPIAddon
 version: 1.0
 main: me.SirSlender.SkillAPIManaAddon.SkillAPIManaAddon
-depends: [SkillAPI]
+depend: [SkillAPI]

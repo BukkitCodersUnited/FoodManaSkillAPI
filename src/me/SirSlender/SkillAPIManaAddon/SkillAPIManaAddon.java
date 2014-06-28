@@ -1,10 +1,10 @@
+//Commented code is for debugging.
 package me.SirSlender.SkillAPIManaAddon;
 
+//import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.sucy.skill.SkillAPI;
@@ -29,56 +29,61 @@ public class SkillAPIManaAddon extends JavaPlugin implements Listener
 		getLogger().info("FoodbarMana Addon Disabled!");
 	}
 	
-	@EventHandler (priority = EventPriority.HIGH)
+	@EventHandler
 	public void onManaUse(PlayerManaUseEvent e)
 	{
 		PlayerSkills playerData = e.getPlayerData();
 		Player player = playerData.getPlayer();
-		int foodMinus = getFoodChangeAmount(e.getMana(), playerData);
-		int foodManaLevel = player.getFoodLevel() - foodMinus;
-		player.setFoodLevel(foodManaLevel);
+		int ratio = playerData.getMaxMana() / 20;
+		int manaUsed = e.getMana();
+		int newFood;
+		if (ratio > 1)
+		{
+			manaUsed = manaUsed / ratio;
+			newFood = player.getFoodLevel() - manaUsed;
+			if (newFood > 20) newFood = 20;
+			else if (newFood < 1) newFood = 1;
+			player.setFoodLevel(newFood);
+		}
+		else
+		{
+			newFood = player.getFoodLevel() - manaUsed;
+			if (newFood > 20) newFood = 20;
+			else if (newFood < 1) newFood = 1;
+			player.setFoodLevel(newFood);		
+		}
 	}
 	
-	@EventHandler (priority = EventPriority.HIGH)
+	@EventHandler
 	public void onManaGain(PlayerManaGainEvent e)
 	{
 		PlayerSkills playerData = e.getPlayerData();
 		Player player = playerData.getPlayer();
-		int foodPlus = getFoodChangeAmount(e.getMana(), playerData);
-		int foodManaLevel = player.getFoodLevel() + foodPlus;
-		player.setFoodLevel(foodManaLevel);
-		
-	}
-	
-	@EventHandler (priority = EventPriority.HIGH)
-	public void onFoodBarChange(FoodLevelChangeEvent e)
-	{
-		Player player = (Player) e.getEntity();
-		int foodLost = 20 - player.getFoodLevel();
-		if (getPlayerMaxMana(player) > 20)
+		int ratio = playerData.getMaxMana() / 20;
+		int manaAdd = e.getMana();
+		int newFood;
+		//player.sendMessage("Mana Gain Triggered");
+		if (ratio > 1)
 		{
-			PlayerSkills pData = skillAPI.getPlayer(player);
-			pData.useMana(foodLost);
-			int mana = getPlayerMana(player);
-			if (mana >= 20) e.setCancelled(true);
-			else;
-		}
-	}
-	
-	public int getFoodChangeAmount(int manaUsed, PlayerSkills playerData)
-	{
-		if (playerData.getMaxMana() > 20)
-		{
-			int foodAmount = manaUsed / 20;
-			if (foodAmount > 20) foodAmount = 20;
-			else;
-			return foodAmount;
+			manaAdd = manaAdd / ratio;
+			if (manaAdd < 1) manaAdd = 1;
+			//player.sendMessage("Mana Added " + manaAdd);
+			newFood = player.getFoodLevel() + manaAdd;
+			//player.sendMessage("newFood " + newFood);
+			if (newFood > 20) newFood = 20;
+			else if (newFood < 1) newFood = 1;
+			//player.sendMessage("newFood new " + newFood);
+			player.setFoodLevel(newFood);
 		}
 		else
 		{
-			int foodAmount = manaUsed;
-			return foodAmount;
-		}
+			newFood = player.getFoodLevel() + manaAdd;
+			//player.sendMessage("newFood " + newFood);
+			if (newFood > 20) newFood = 20;
+			else if (newFood < 1) newFood = 1;
+			//player.sendMessage("newFood new " + newFood);
+			player.setFoodLevel(newFood);		
+		}	
 	}
 	
 	public int getPlayerMana(Player player)
