@@ -42,14 +42,14 @@ public class SkillAPIManaAddon extends JavaPlugin implements Listener
 			manaUsed = manaUsed / ratio;
 			newFood = player.getFoodLevel() - manaUsed;
 			if (newFood > 20) newFood = 20;
-			else if (newFood < 1) newFood = 1;
+			else if (newFood < 1) newFood = 0;
 			player.setFoodLevel(newFood);
 		}
 		else
 		{
 			newFood = player.getFoodLevel() - manaUsed;
 			if (newFood > 20) newFood = 20;
-			else if (newFood < 1) newFood = 1;
+			else if (newFood < 1) newFood = 0;
 			player.setFoodLevel(newFood);		
 		}
 	}
@@ -71,7 +71,7 @@ public class SkillAPIManaAddon extends JavaPlugin implements Listener
 			newFood = player.getFoodLevel() + manaAdd;
 			//player.sendMessage("newFood " + newFood);
 			if (newFood > 20) newFood = 20;
-			else if (newFood < 1) newFood = 1;
+			else if (newFood < 1) newFood = 0;
 			//player.sendMessage("newFood new " + newFood);
 			player.setFoodLevel(newFood);
 		}
@@ -80,7 +80,7 @@ public class SkillAPIManaAddon extends JavaPlugin implements Listener
 			newFood = player.getFoodLevel() + manaAdd;
 			//player.sendMessage("newFood " + newFood);
 			if (newFood > 20) newFood = 20;
-			else if (newFood < 1) newFood = 1;
+			else if (newFood < 1) newFood = 0;
 			//player.sendMessage("newFood new " + newFood);
 			player.setFoodLevel(newFood);		
 		}	
